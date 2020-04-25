@@ -27,6 +27,12 @@ class PostSpider(scrapy.Spider):
                 'postLink' : postheader.css('h2 a::attr(href)').get()
             }
 
+        next_page = response.css('.next-posts-link::attr(href)').get()
+        if next_page is not None:
+            next_page = response.urljoin(next_page)
+            yield scrapy.Request(next_page, callback = self.parse)
+
+
 
 
 class PostDFdSpider(scrapy.Spider):
